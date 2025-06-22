@@ -1,6 +1,8 @@
 from scapy.all import sniff, IP, Raw
 
-packets = sniff(iface="WiFi", count=100)
+#name of network interface to listen on
+interface = "WiFi"
+packets = sniff(iface = interface, count=100)
 
 for pkt in packets:
     if IP in pkt:
@@ -8,7 +10,8 @@ for pkt in packets:
         dst = pkt[IP].dst
         proto = pkt[IP].proto
         print(f"{src}--->{dst}  / Protocol : {proto}")
-
+    #Check if packet contain a Raw payload
     if Raw in pkt:
+        #Decoding payload and ignoring decoding errors
         print(f"Payload : {pkt[Raw].load.decode(errors='ignore')}")
         
